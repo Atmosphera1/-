@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Список дел</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <div id="shopping-list">
+    <div class="header">
+      <h1>Список дел</h1>
+      <button v-if="editing" @click="doEdit(false)" class="btn btn-cancel">Отменить</button>
+      <button v-else @click="doEdit(true)" class="btn btn-primry">Добавить элемент</button>
+    </div>
+    
+    <div v-if="editing" class="add-item-form">
+      <input 
+        @keyup.enter="saveItem" 
+        type="text" v-model="newItem" placeholder = "Добавить дело">
+      <label>
+        <input type="checkbox" v-model="newItemHighPriority">
+        Высокий приоритет
+      </label>
+      <button 
+        @click="saveItem" 
+        class="btn btn-primary">
+        Сохранить
+      </button>
+    </div>
+    <p v-if="items.length === 0">Списка дел нет!</p>
+    <ul>
+      <li 
+        v-for="item in reversedItems" 
+        @click="togglePurchased(item)"
+        :key="item.id"
+        class="static-class"
+        :class="{strikeout: item.purchased, priority: item.highPriority}"
+      >
+        {{item.label}}
+        <button @click.stop="deleteItem(item)" class="btn-btn-delete">Удалить</button>
+      </li>
+    </ul>
+  </div>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
